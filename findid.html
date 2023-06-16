@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>비밀번호 찾기</title>
+  <style>
+    .gray-text {
+      color: gray;
+    }
+    .error-text {
+      color: red;
+    }
+    .success-text {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>비밀번호 찾기</h1>
+  
+  <form>
+    <label for="name">이름:</label>
+    <input type="text" id="name" placeholder="이름 (한글, 영어 20자 이내)" required><br><br>
+    
+    <label for="birthdate">생년월일:</label>
+    <input type="text" id="birthdate1" pattern="[0-9]{4}" maxlength="4" required> -
+    <input type="text" id="birthdate2" pattern="[0-9]{2}" maxlength="2" required> -
+    <input type="text" id="birthdate3" pattern="[0-9]{2}" maxlength="2" required><br><br>
+    
+    <label for="email">이메일:</label>
+    <input type="email" id="email1" maxlength="50" required> @
+    <input type="text" id="email2" maxlength="50" required><br><br>
+    
+    <label for="idOrPassword">찾을 항목:</label>
+    <input type="radio" id="id" name="idOrPassword" value="id" checked>
+    <label for="id">아이디</label>
+    <input type="radio" id="password" name="idOrPassword" value="password">
+    <label for="password">비밀번호</label><br><br>
+    
+    <label for="receiveMethod">수단:</label>
+    <input type="radio" id="emailMethod" name="receiveMethod" value="email" checked>
+    <label for="emailMethod">이메일</label>
+    <input type="radio" id="phoneMethod" name="receiveMethod" value="phone">
+    <label for="phoneMethod">핸드폰</label><br><br>
+    
+    <button type="button" id="send">전송</button>
+  </form>
+  
+  <script>
+    document.getElementById("send").addEventListener("click", function() {
+      var name = document.getElementById("name").value;
+      var birthdate1 = document.getElementById("birthdate1").value;
+      var birthdate2 = document.getElementById("birthdate2").value;
+      var birthdate3 = document.getElementById("birthdate3").value;
+      var email1 = document.getElementById("email1").value;
+      var email2 = document.getElementById("email2").value;
+      var idOrPassword = document.querySelector('input[name="idOrPassword"]:checked').value;
+      var receiveMethod = document.querySelector('input[name="receiveMethod"]:checked').value;
+      
+      var errorMessages = [];
+      
+      if (!/^[가-힣a-zA-Z]{1,20}$/.test(name)) {
+        errorMessages.push("입력하신 이름이 올바르지 않습니다. 다시 한 번 확인해주세요.");
+      }
+      
+      if (birthdate1.length !== 4 || birthdate2.length !== 2 || birthdate3.length !== 2) {
+        errorMessages.push("입력하신 생년월일이 올바르지 않습니다. 다시 한 번 확인해주세요.");
+      }
+      
+      if (!/^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]{1,50}$/.test(email1) || !/^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]{1,50}$/.test(email2)) {
+        errorMessages.push("입력하신 이메일이 올바르지 않습니다. 다시 한 번 확인해주세요.");
+      }
+      
+      if (errorMessages.length > 0) {
+        alert(errorMessages.join("\n"));
+      } else {
+        var message;
+        
+        if (idOrPassword === "id") {
+          message = "회원님의 id가";
+        } else {
+          message = "회원님의 임시 비밀번호가";
+        }
+        
+        if (receiveMethod === "email") {
+          alert(message + " 이메일로 전송되었습니다.");
+        } else {
+          alert(message + " 핸드폰으로 전송되었습니다.");
+        }
+        
+        // 비밀번호 변경 로직 구현
+        // ...
+      }
+    });
+  </script>
+</body>
+</html>
